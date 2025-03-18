@@ -126,6 +126,7 @@ pipeline {
                            "project": "${env.JOB_NAME}"
                          }'
                     """
+            }
         }
     }
 }
