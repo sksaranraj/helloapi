@@ -23,6 +23,20 @@ pipeline {
             }
         }
 
+        stage('Read Commit Message') {
+            steps {
+                script {
+                    // Run a Git command to get the latest commit message
+                    def commitMessage = sh(
+                        script: "git log -1 --pretty=%B",
+                        returnStdout: true
+                    ).trim()
+
+                    echo "Commit message: ${commitMessage}"
+                }
+            }
+        }
+
         stage('whoami and printenv') {
             steps {
                 script {
