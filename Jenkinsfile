@@ -23,6 +23,17 @@ pipeline {
             }
         }
 
+        stage('who am i') {
+            steps {
+                script {
+                    // Build the Docker image; adjust context (.) if needed
+                    sh """
+                      whoami
+                    """
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
