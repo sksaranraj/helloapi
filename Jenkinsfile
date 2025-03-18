@@ -23,12 +23,13 @@ pipeline {
             }
         }
 
-        stage('who am i') {
+        stage('whoami and printenv') {
             steps {
                 script {
                     // Build the Docker image; adjust context (.) if needed
                     sh """
                       whoami
+                      printenv
                     """
                 }
             }
