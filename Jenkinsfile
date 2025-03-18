@@ -47,18 +47,12 @@ pipeline {
 
         stage('Authenticate with GCP') {
             steps {
-                script {
-                    // Write the service account key to a file and authenticate
-                    // This uses the secret text or file stored in Jenkins
-                    // Make sure you created a credential named 'gcp-sa-key'
-                    writeFile file: 'sa_key.json', text: "${GCP_SERVICE_ACCOUNT_KEY}"
-                    
-                    // Activate the service account
+                // Provide the Jenkins credential ID in 'credentialsId'.
+                // 'variable' is the env var that'll point to the key file.
+                withCredentials([file(credentialsId: 'gcp-sa-key', variable: 'GCP_SA_FILE')]) {
                     sh """
-                      gcloud auth activate-service-account --key-file=sa_key.json
+                      gcloud auth activate-service-account --key-file=\$GCP_SA_FILE
                       gcloud config set project \$GCP_PROJECT_ID
-                      
-                      // Configure Docker to use gcloud's credentials
                       gcloud auth configure-docker --quiet
                     """
                 }
