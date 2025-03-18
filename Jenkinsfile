@@ -77,26 +77,9 @@ pipeline {
                 // ... your deployment logic here ...
                 
                 // On success, send a deployment event to New Relic
-                withCredentials([
-                    string(credentialsId: 'NR_ACCOUNT_ID', variable: 'NEWRELIC_ACCOUNT_ID'),
-                    string(credentialsId: 'NR_INSERT_KEY', variable: 'NEWRELIC_INSERT_KEY')
-                ]) {
-                    sh """
-                      echo "New Relic Account ID: \$NEWRELIC_ACCOUNT_ID"
-                      # Example usage:
-                      curl -X POST "https://insights-collector.newrelic.com/v1/accounts/\$NEWRELIC_ACCOUNT_ID/events" \
-                        -H "X-Insert-Key: \$NEWRELIC_INSERT_KEY" \
-                        -H "Content-Type: application/json" \
-                         -d '{
-                           "eventType": "DeploymentEvent",
-                           "pipelineId": "${env.BUILD_ID}",
-                           "commitSha": "${env.GIT_COMMIT}",
-                           "deploymentTimestamp": "'\$(date +%s)'",
-                           "status": "SUCCESS",
-                           "project": "my-flask-app"
-                         }'
-                    """
-                }
+                sh"""
+                echo "Deployment"
+                """
             }
         }
     }
@@ -107,6 +90,10 @@ pipeline {
         always {
             // Clean up sensitive files
             sh 'rm -f sa_key.json'
+            script {
+                // Create a new environment variable named BUILD_STATUS
+                env.BUILD_STATUS = currentBuild.currentResult
+            }
             withCredentials([
                     string(credentialsId: 'NR_ACCOUNT_ID', variable: 'NEWRELIC_ACCOUNT_ID'),
                     string(credentialsId: 'NR_INSERT_KEY', variable: 'NEWRELIC_INSERT_KEY')
