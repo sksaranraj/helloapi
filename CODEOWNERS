@@ -1,0 +1,9 @@
+# This file is auto-generated. DO NOT EDIT DIRECTLY.
+# Generated on: 2025-04-22 17:55:34
+
+*    @sksaranraj
+*.py    @sksaranraj @python-developer
+.github/    @sksaranraj @devops-team
+*.md    @docs-team @sksaranraj
+api/    @api-team
+services/    @api-team @backend-team
